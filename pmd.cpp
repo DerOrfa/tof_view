@@ -181,7 +181,7 @@ void PMD::operator()(){
             isOK(pmdSetModulationFrequency(hnd,0,conf.modulation_freq[0]),"Failed to set modulation frequency");
 
             processingCmdSet("SetAveraging",conf.averaging);
-            processingCmdSet("GetAveragingFrames",conf.averaging_frames);
+            processingCmdSet("SetAveragingFrames",conf.averaging_frames);
 
             conf.changed=false;
         }

@@ -61,6 +61,5 @@ void Widget::on_numAveraging_valueChanged(int arg1)
     if(PMD::config().averaging_frames!=arg1){
         PMD::config().averaging_frames=arg1;
         PMD::config().changed=true;
-        qDebug("Changed averaging frames to %d",arg1);
     }
 }
