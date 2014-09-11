@@ -80,8 +80,8 @@ void Widget::on_isThrottling_toggled(bool checked)
 
 void Widget::on_numThrott_valueChanged(int arg1)
 {
-    if(PMD::config().throttle_frames!=arg1){
-        PMD::config().throttle_frames=arg1;
+    if(PMD::config().throttle_frames!=unsigned(arg1)){
+        PMD::config().throttle_frames=unsigned(arg1);
         PMD::config().changed=true;
     }
 }
