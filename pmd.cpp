@@ -144,6 +144,9 @@ PMD::PMD(const char pmd_source_plugin[], const char pmd_proc_plugin[]):m_good(fa
     config().averaging=processingCmdGet<bool>("GetAveraging");
     config().averaging_frames=processingCmdGet<bool>("GetAveragingFrames");
 
+    config().throttle_frames=30;
+    config().throttling=false;
+
     m_good=true;
 
     // make sure we close the pmd when closing
@@ -171,10 +174,12 @@ void PMD::operator()(){
     const size_t size=img.numColumns * img.numRows * sizeof (float);
     configuration &conf=config();
 
-    static const std::chrono::microseconds frametime(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::seconds(1)) / 30 );
+    std::chrono::microseconds frametime(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::seconds(1)) / conf.throttle_frames );
+    std::chrono::high_resolution_clock::time_point start;
 
     while(!m_quit && m_good){
-        auto start=std::chrono::high_resolution_clock::now();
+        if(conf.throttling)
+            start=std::chrono::high_resolution_clock::now();
 
         if(conf.changed){
             isOK(pmdSetIntegrationTime(hnd,0,conf.integ_time[0]),"Failed to set integration time");
@@ -182,6 +187,8 @@ void PMD::operator()(){
 
             processingCmdSet("SetAveraging",conf.averaging);
             processingCmdSet("SetAveragingFrames",conf.averaging_frames);
+
+            frametime=std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::seconds(1)) / conf.throttle_frames;
 
             conf.changed=false;
         }
@@ -196,9 +203,11 @@ void PMD::operator()(){
         {
             render->compileNextTime();
         }
-        const auto elapsed=std::chrono::high_resolution_clock::now() - start;
-        if(elapsed < frametime){
-            usleep(std::chrono::duration_cast<std::chrono::microseconds>(frametime- elapsed).count());
+        if(conf.throttling){
+            const auto elapsed=std::chrono::high_resolution_clock::now() - start;
+            if(elapsed < frametime){
+                usleep(std::chrono::duration_cast<std::chrono::microseconds>(frametime- elapsed).count());
+            }
         }
     }
     std::cout << "Ending thread for ToF sensor" << std::endl;

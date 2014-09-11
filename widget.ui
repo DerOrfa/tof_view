@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>726</width>
-    <height>597</height>
+    <width>745</width>
+    <height>605</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,77 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="0">
+    <widget class="QFrame" name="frame_3">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Averaging</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QSpinBox" name="numAveraging">
+           <property name="buttonSymbols">
+            <enum>QAbstractSpinBox::PlusMinus</enum>
+           </property>
+           <property name="suffix">
+            <string notr="true"> frames</string>
+           </property>
+           <property name="maximum">
+            <number>9999</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="isAveraging">
+           <property name="text">
+            <string>enabled</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Throttling</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QSpinBox" name="numThrott">
+           <property name="buttonSymbols">
+            <enum>QAbstractSpinBox::PlusMinus</enum>
+           </property>
+           <property name="suffix">
+            <string notr="true"> frames/sec</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>9999</number>
+           </property>
+           <property name="singleStep">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="isThrottling">
+           <property name="text">
+            <string>CheckBox</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1" rowspan="2">
     <widget class="QFrame" name="frame">
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
@@ -59,7 +129,7 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="2">
+   <item row="0" column="2" rowspan="2">
     <widget class="QFrame" name="frame_2">
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
@@ -91,35 +161,6 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Averaging</string>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QSpinBox" name="numAveraging">
-        <property name="buttonSymbols">
-         <enum>QAbstractSpinBox::PlusMinus</enum>
-        </property>
-        <property name="suffix">
-         <string notr="true"> frames</string>
-        </property>
-        <property name="maximum">
-         <number>9999</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="isAveraging">
-        <property name="text">
-         <string>enabled</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -132,12 +173,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>668</x>
-     <y>458</y>
+     <x>687</x>
+     <y>476</y>
     </hint>
     <hint type="destinationlabel">
-     <x>668</x>
-     <y>506</y>
+     <x>687</x>
+     <y>586</y>
     </hint>
    </hints>
   </connection>
@@ -148,12 +189,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>707</x>
-     <y>486</y>
+     <x>726</x>
+     <y>504</y>
     </hint>
     <hint type="destinationlabel">
-     <x>707</x>
-     <y>506</y>
+     <x>726</x>
+     <y>586</y>
     </hint>
    </hints>
   </connection>
@@ -164,11 +205,27 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>377</x>
-     <y>562</y>
+     <x>318</x>
+     <y>572</y>
     </hint>
     <hint type="destinationlabel">
-     <x>282</x>
+     <x>171</x>
+     <y>574</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>isThrottling</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>numThrott</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>536</x>
+     <y>559</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>460</x>
      <y>562</y>
     </hint>
    </hints>

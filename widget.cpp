@@ -9,9 +9,15 @@ void Widget::updateConfig(PMDHandle _hnd)
     PMD::configuration &config=PMD::config();
     integ_time->setValue(config.integ_time[0]);
     mod_freq->setValue(config.modulation_freq[0]);
+
     isAveraging->setChecked(config.averaging);
-    numAveraging->setEnabled(config.averaging);
+    isAveraging->setChecked(config.throttling);
+
     numAveraging->setValue(config.averaging_frames);
+    numAveraging->setEnabled(config.averaging);
+    numThrott->setValue(config.throttle_frames);
+    numThrott->setEnabled(config.throttling);
+
 }
 
 Widget::Widget(QWidget *parent): QWidget(parent)
@@ -60,6 +66,22 @@ void Widget::on_numAveraging_valueChanged(int arg1)
 {
     if(PMD::config().averaging_frames!=arg1){
         PMD::config().averaging_frames=arg1;
+        PMD::config().changed=true;
+    }
+}
+
+void Widget::on_isThrottling_toggled(bool checked)
+{
+    if(PMD::config().throttling!=checked){
+        PMD::config().throttling=checked;
+        PMD::config().changed=true;
+    }
+}
+
+void Widget::on_numThrott_valueChanged(int arg1)
+{
+    if(PMD::config().throttle_frames!=arg1){
+        PMD::config().throttle_frames=arg1;
         PMD::config().changed=true;
     }
 }

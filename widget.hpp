@@ -16,6 +16,8 @@ private slots:
     void on_mod_freq_valueChanged(int value);
     void on_isAveraging_toggled(bool checked);
     void on_numAveraging_valueChanged(int arg1);
+    void on_isThrottling_toggled(bool checked);
+    void on_numThrott_valueChanged(int arg1);
 };
 
 #endif // WIDGET_HPP
