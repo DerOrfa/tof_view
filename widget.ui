@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>745</width>
-    <height>605</height>
+    <width>732</width>
+    <height>609</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Widget</string>
+   <string>tof_view</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -27,7 +27,45 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="0" column="1">
+    <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QSlider" name="integ_time">
+        <property name="minimum">
+         <number>12</number>
+        </property>
+        <property name="maximum">
+         <number>2000</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="3">
     <widget class="QFrame" name="frame_3">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
@@ -84,75 +122,37 @@
          <item>
           <widget class="QCheckBox" name="isThrottling">
            <property name="text">
-            <string>CheckBox</string>
+            <string>enabled</string>
            </property>
           </widget>
          </item>
         </layout>
        </widget>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="1" rowspan="2">
-    <widget class="QFrame" name="frame">
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QSlider" name="integ_time">
-        <property name="minimum">
-         <number>12</number>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="title">
+         <string>Bilateral Filter</string>
         </property>
-        <property name="maximum">
-         <number>2000</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="2" rowspan="2">
-    <widget class="QFrame" name="frame_2">
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QSlider" name="mod_freq">
-        <property name="minimum">
-         <number>10000000</number>
-        </property>
-        <property name="maximum">
-         <number>60000000</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QSpinBox" name="numBilat">
+           <property name="suffix">
+            <string> pixels</string>
+           </property>
+           <property name="minimum">
+            <number>3</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="isBilat">
+           <property name="text">
+            <string>enabled</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -175,22 +175,6 @@
     </hint>
     <hint type="destinationlabel">
      <x>687</x>
-     <y>586</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>mod_freq</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>label_2</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>726</x>
-     <y>504</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>726</x>
      <y>586</y>
     </hint>
    </hints>

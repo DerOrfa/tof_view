@@ -43,8 +43,8 @@ public:
     struct configuration{
         std::atomic_bool changed;
         unsigned integ_time[3],modulation_freq[3];
-        bool averaging,throttling;
-        unsigned averaging_frames,throttle_frames;
+        bool averaging,throttling,bilat_filter;
+        unsigned averaging_frames,throttle_frames,bilat_filtersize;
     };
     bool isOK(int err,const char err_msg[]);
     static bool isOK(PMDHandle hnd, int err,const char err_msg[]);

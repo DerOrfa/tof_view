@@ -33,7 +33,7 @@ void ToFRender::prepareQuad(uint_fast16_t xpos, uint_fast16_t ypos){
     glNewList(start+index,GL_COMPILE);
     if(*(m_qmap.get()+index)>500){
         glPushMatrix();
-        glTranslatef(0,0,*(m_zmap.get()+index)*-900); // SPACE
+        glTranslatef(0,0,*(m_zmap.get()+index)*-500); // SPACE
         glCallList(quad+(index));
         glPopMatrix();
     }
@@ -142,7 +142,10 @@ PMD::PMD(const char pmd_source_plugin[], const char pmd_proc_plugin[]):m_good(fa
     isOK(pmdGetModulationFrequency(hnd,config().modulation_freq,0),"Problem querrying the modulation frequency");
 
     config().averaging=processingCmdGet<bool>("GetAveraging");
-    config().averaging_frames=processingCmdGet<bool>("GetAveragingFrames");
+    config().averaging_frames=processingCmdGet<int>("GetAveragingFrames");
+
+    config().bilat_filter=processingCmdGet<bool>("GetBilateralFilter");
+    config().bilat_filtersize=processingCmdGet<int>("GetBilateralFilterKernelSize");
 
     config().throttle_frames=30;
     config().throttling=false;
@@ -187,6 +190,9 @@ void PMD::operator()(){
 
             processingCmdSet("SetAveraging",conf.averaging);
             processingCmdSet("SetAveragingFrames",conf.averaging_frames);
+
+            processingCmdSet("SetBilateralFilter",conf.bilat_filter);
+            processingCmdSet("SetBilateralFilterKernelSize",conf.bilat_filtersize);
 
             frametime=std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::seconds(1)) / conf.throttle_frames;
 

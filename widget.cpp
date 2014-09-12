@@ -3,21 +3,25 @@
 #include <mutex>
 
 
+void Widget::setupSpinbox(QSpinBox *box, bool enabled, int value)
+{
+    box->setValue(value);
+    box->setEnabled(enabled);
+}
+
 void Widget::updateConfig(PMDHandle _hnd)
 {
     hnd=_hnd;
     PMD::configuration &config=PMD::config();
     integ_time->setValue(config.integ_time[0]);
-    mod_freq->setValue(config.modulation_freq[0]);
 
     isAveraging->setChecked(config.averaging);
-    isAveraging->setChecked(config.throttling);
+    isThrottling->setChecked(config.throttling);
+    isBilat->setChecked(config.bilat_filter);
 
-    numAveraging->setValue(config.averaging_frames);
-    numAveraging->setEnabled(config.averaging);
-    numThrott->setValue(config.throttle_frames);
-    numThrott->setEnabled(config.throttling);
-
+    setupSpinbox(numAveraging,config.averaging,config.averaging_frames);
+    setupSpinbox(numThrott,config.throttling,config.throttle_frames);
+    setupSpinbox(numBilat,config.bilat_filter,config.bilat_filtersize);
 }
 
 Widget::Widget(QWidget *parent): QWidget(parent)
@@ -40,20 +44,6 @@ void Widget::on_integ_time_valueChanged(int value)
     integ_time->setValue(result);
 }
 
-void Widget::on_mod_freq_valueChanged(int value)
-{
-    unsigned result;
-    if(PMD::isOK(hnd,pmdGetValidModulationFrequency(hnd,&result,0,CloseTo,value),"oops")){
-        PMD::configuration &conf=PMD::config();
-        if(conf.modulation_freq[0]!=result){
-            conf.modulation_freq[0]=result;
-            conf.changed=true;
-        }
-    }
-
-    mod_freq->setValue(result);
-}
-
 void Widget::on_isAveraging_toggled(bool checked)
 {
     if(PMD::config().averaging!=checked){
@@ -64,8 +54,8 @@ void Widget::on_isAveraging_toggled(bool checked)
 
 void Widget::on_numAveraging_valueChanged(int arg1)
 {
-    if(PMD::config().averaging_frames!=arg1){
-        PMD::config().averaging_frames=arg1;
+    if(PMD::config().averaging_frames!=unsigned(arg1)){
+        PMD::config().averaging_frames=unsigned(arg1);
         PMD::config().changed=true;
     }
 }
@@ -82,6 +72,22 @@ void Widget::on_numThrott_valueChanged(int arg1)
 {
     if(PMD::config().throttle_frames!=unsigned(arg1)){
         PMD::config().throttle_frames=unsigned(arg1);
+        PMD::config().changed=true;
+    }
+}
+
+void Widget::on_isBilat_toggled(bool checked)
+{
+    if(PMD::config().bilat_filter!=checked){
+        PMD::config().bilat_filter=checked;
+        PMD::config().changed=true;
+    }
+}
+
+void Widget::on_numBilat_valueChanged(int arg1)
+{
+    if(PMD::config().bilat_filtersize!=unsigned(arg1)){
+        PMD::config().bilat_filtersize=unsigned(arg1);
         PMD::config().changed=true;
     }
 }
