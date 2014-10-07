@@ -1,6 +1,8 @@
 #include "pmd.hpp"
 #include <chrono>
 
+bool quit_thread=false;
+
 void closePmd(){
     std::cout << "Closing all pmd devices" << std::endl;
     pmdCloseAll();
@@ -33,7 +35,7 @@ void ToFRender::prepareQuad(uint_fast16_t xpos, uint_fast16_t ypos){
     glNewList(start+index,GL_COMPILE);
     if(*(m_qmap.get()+index)>500){
         glPushMatrix();
-        glTranslatef(0,0,*(m_zmap.get()+index)*-500); // SPACE
+        glTranslatef(0,0,*(m_zmap.get()+index)*500); // SPACE
         glCallList(quad+(index));
         glPopMatrix();
     }
@@ -172,15 +174,21 @@ SGLshPtr<ToFRender> PMD::getRenderer(){
         return render=SGLshPtr<ToFRender>();
 }
 
+Recog PMD::getRecog(SGLshPtr<SGLObjBase> marker)
+{
+    assert(render);
+    return Recog(img.numColumns,img.numRows,render->m_zmap,render->m_qmap,marker);
+}
+
 void PMD::operator()(){
-    std::cout << "Startet thread for ToF sensor" << std::endl;
+    std::cout << "Started thread for ToF sensor" << std::endl;
     const size_t size=img.numColumns * img.numRows * sizeof (float);
     configuration &conf=config();
 
     std::chrono::microseconds frametime(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::seconds(1)) / conf.throttle_frames );
     std::chrono::high_resolution_clock::time_point start;
 
-    while(!m_quit && m_good){
+    while(!quit_thread && m_good){
         if(conf.throttling)
             start=std::chrono::high_resolution_clock::now();
 

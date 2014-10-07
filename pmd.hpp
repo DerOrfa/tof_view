@@ -9,6 +9,9 @@
 #include <signal.h>
 #include <atomic>
 #include <boost/lexical_cast.hpp>
+#include "recog.hpp"
+
+extern bool quit_thread;
 
 
 class ToFTex:public SGLBaseTex{
@@ -36,7 +39,6 @@ class PMD:public PMDDataDescription
 {
     SGLshPtr<ToFTex> tex;
     bool m_good;
-    static bool m_quit;
     SGLshPtr< ToFRender > render;
     std::shared_ptr<float> zmap,vidmap,qmap;
 public:
@@ -56,6 +58,7 @@ public:
     PMDHandle hnd;
     PMD(const char pmd_source_plugin[],const char pmd_proc_plugin[]);
     SGLshPtr<ToFRender> getRenderer();
+    Recog getRecog(SGLshPtr< SGLObjBase > marker = SGLshPtr<SGLObjBase>());
 
     template<typename T> T processingCmdGet(const char cmd[]){
         char result[256];
@@ -70,7 +73,6 @@ public:
     }
 
     bool good(){return m_good;}
-    static void finish(){m_quit=true;};
     void operator()();
 };
 

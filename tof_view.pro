@@ -13,9 +13,11 @@ TEMPLATE = app
 
 QMAKE_CXXFLAGS += -std=c++11
 
-SOURCES += main.cpp widget.cpp pmd.cpp
+SOURCES += main.cpp widget.cpp pmd.cpp \
+    recog.cpp
 
-HEADERS  += widget.hpp pmd.hpp
+HEADERS  += widget.hpp pmd.hpp \
+    recog.hpp
 
 FORMS    += widget.ui
 

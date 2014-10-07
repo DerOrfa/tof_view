@@ -3,6 +3,8 @@
 #include "pmd.hpp"
 #include <QtGui/QApplication>
 #include "widget.hpp"
+#include <primitives/sglgeosphere.h>
+#include <recog.hpp>
 
 int main(int argc, char** argv)
 {
@@ -13,9 +15,13 @@ int main(int argc, char** argv)
     if(pmd.good()){
 
         w->show();
-        SGLshPtr< ToFRender > tof=pmd.getRenderer();
-        tof->Move(-80,-60,100);
+		glw->Camera->MoveCamTo(SGLVektor(0,0,-20)); //look from behind
+        auto tof=pmd.getRenderer();
+       auto ball=SGLshPtr_new<SGLGeosphere >();
+
+        tof->Move(-80,-60,-80);
         glw->registerObj(tof);
+       glw->registerObj(ball);
 
         QTimer *timer = new QTimer(glw);
         glw->connect(timer, SIGNAL(timeout()), SLOT(updateGL()));
@@ -23,13 +29,13 @@ int main(int argc, char** argv)
 
         w->updateConfig(pmd.hnd);
 
-        std::thread t(pmd);
+        std::thread t1(pmd);
+		std::thread t2(pmd.getRecog(ball));
         app.exec();
-        PMD::finish();
-        t.join();
+        quit_thread=true;
+        t1.join();
+		t2.join();
         return 0;
     } else
         return -1;
 }
-
-bool PMD::m_quit=false;
