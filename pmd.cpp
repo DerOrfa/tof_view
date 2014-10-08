@@ -32,8 +32,9 @@ void ToFTex::doUpdate(){
 
 void ToFRender::prepareQuad(uint_fast16_t xpos, uint_fast16_t ypos){
     const size_t index=xpos+ypos*m_width;
+	const PMD::configuration &conf=PMD::config();
     glNewList(start+index,GL_COMPILE);
-    if(*(m_qmap.get()+index)>500){
+	if(ypos>conf.bottomCap && ypos< m_height-conf.topCap && *(m_qmap.get()+index)>500){
         glPushMatrix();
         glTranslatef(0,0,*(m_zmap.get()+index)*500); // SPACE
         glCallList(quad+(index));
@@ -151,6 +152,9 @@ PMD::PMD(const char pmd_source_plugin[], const char pmd_proc_plugin[]):m_good(fa
 
     config().throttle_frames=30;
     config().throttling=false;
+	
+	config().bottomCap=0;
+	config().topCap=0;
 
     m_good=true;
 
@@ -215,13 +219,13 @@ void PMD::operator()(){
 
         if(m_good)
         {
-            render->compileNextTime();
+			render->compileNextTime();
         }
         if(conf.throttling){
-            const auto elapsed=std::chrono::high_resolution_clock::now() - start;
-            if(elapsed < frametime){
-                usleep(std::chrono::duration_cast<std::chrono::microseconds>(frametime- elapsed).count());
-            }
+			const auto elapsed=std::chrono::high_resolution_clock::now() - start;
+			if(elapsed < frametime){
+				usleep(std::chrono::duration_cast<std::chrono::microseconds>(frametime- elapsed).count());
+			}
         }
     }
     std::cout << "Ending thread for ToF sensor" << std::endl;

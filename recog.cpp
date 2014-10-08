@@ -6,12 +6,15 @@ void Recog::operator()()
 {
     std::cout << "Started thread for face recognition" << std::endl;
 	const float * oldmin;
+	PMD::configuration &conf=PMD::config();
     while(!quit_thread){
         const float * const start=m_zmap.get();
         const float * const end=m_zmap.get()+m_width*m_height;
         const float * min=start;
 
-        for(const float *z=start,*q=m_qmap.get();z<end;z++,q++){
+		for(const float *z=start+conf.bottomCap*m_width,*q=m_qmap.get()+conf.bottomCap*m_width;
+			z<end-conf.topCap*m_width;
+			z++,q++){
             if(*q>500 && *z<*min)
                 min=z;
         }

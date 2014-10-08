@@ -20,6 +20,8 @@ private slots:
     void on_numThrott_valueChanged(int arg1);
     void on_isBilat_toggled(bool checked);
     void on_numBilat_valueChanged(int arg1);
+	void on_bottomCap_valueChanged(int arg1);
+	void on_topCap_valueChanged(int arg1);
 };
 
 #endif // WIDGET_HPP

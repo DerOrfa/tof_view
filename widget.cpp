@@ -91,3 +91,19 @@ void Widget::on_numBilat_valueChanged(int arg1)
         PMD::config().changed=true;
     }
 }
+
+void Widget::on_bottomCap_valueChanged(int arg1)
+{
+	if(PMD::config().bottomCap!=unsigned(arg1)){
+		PMD::config().bottomCap=unsigned(arg1);
+		PMD::config().changed=true;
+	}
+}
+
+void Widget::on_topCap_valueChanged(int arg1)
+{
+	if(PMD::config().topCap!=unsigned(arg1)){
+		PMD::config().topCap=unsigned(arg1);
+		PMD::config().changed=true;
+	}
+}

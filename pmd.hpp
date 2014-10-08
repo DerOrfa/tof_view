@@ -46,7 +46,7 @@ public:
         std::atomic_bool changed;
         unsigned integ_time[3],modulation_freq[3];
         bool averaging,throttling,bilat_filter;
-        unsigned averaging_frames,throttle_frames,bilat_filtersize;
+		unsigned averaging_frames,throttle_frames,bilat_filtersize,topCap,bottomCap;
     };
     bool isOK(int err,const char err_msg[]);
     static bool isOK(PMDHandle hnd, int err,const char err_msg[]);
